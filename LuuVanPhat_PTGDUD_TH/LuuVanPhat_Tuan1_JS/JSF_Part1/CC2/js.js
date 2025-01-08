@@ -1,14 +1,14 @@
-// var massMark = 95;
-// var heightMark = 1.88;
+var massMark = 95;
+var heightMark = 1.88;
  
-// var massJohn = 85;
-// var heightJohn = 1.76;
+var massJohn = 85;
+var heightJohn = 1.76;
 
-var massMark = 78;
-var heightMark = 1.69;
+// var massMark = 78;
+// var heightMark = 1.69;
  
-var massJohn = 92;
-var heightJohn = 1.95;
+// var massJohn = 92;
+// var heightJohn = 1.95;
 
 var BMIMark = (massMark/(heightMark*heightMark))
 var BMIJohn = (massJohn/(heightJohn*heightJohn))
