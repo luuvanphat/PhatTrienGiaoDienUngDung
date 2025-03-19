@@ -1,0 +1,45 @@
+[
+    {
+      "id": 1,
+      "name": "Phở bò",
+      "price": 50000,
+      "description": "Món phở bò truyền thống.",
+      "image": "/src/img/img.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Bún chả",
+      "price": 45000,
+      "description": "Món bún chả Hà Nội thơm ngon.",
+      "image": "/src/img/img.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Gỏi cuốn",
+      "price": 30000,
+      "description": "Món gỏi cuốn tươi ngon, thích hợp làm khai vị.",
+      "image": "/src/img/img.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Cơm tấm sườn bì",
+      "price": 40000,
+      "description": "Món cơm tấm đặc trưng miền Nam.",
+      "image": "/src/img/img.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Chè ba màu",
+      "price": 25000,
+      "description": "Món chè giải nhiệt với ba loại đậu hấp dẫn.",
+      "image": "/src/img/img.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Chè thập cẩm",
+      "price": 35000,
+      "description": "Món chè giải nhiệt thập cẩm.",
+      "image": "/src/img/img.jpg"
+    }
+  ]
+  
