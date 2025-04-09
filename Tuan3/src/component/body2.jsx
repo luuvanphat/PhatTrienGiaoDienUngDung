@@ -1,8 +1,7 @@
-import { useState } from 'react';
 import './chefify.css';
 
 function Body2() {
-    var url = 'https://67c84e770acf98d07085f192.mockapi.io/cf';
+    //var url = 'https://67c84e770acf98d07085f192.mockapi.io/cf';
 
     return (
         <>

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './chefify.css'; 
 
 function Body1() {
