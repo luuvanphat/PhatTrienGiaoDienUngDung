@@ -1,44 +1,20 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addTodo, toggleTodo, removeTodo } from './redux/todoSlice';
+import { toggleTheme } from './redux/themeSlice';
 
 function App() {
-  const [newTodo, setNewTodo] = useState('');
-  const todos = useSelector((state) => state.todos.todos);
+  const theme = useSelector((state) => state.theme.mode);
   const dispatch = useDispatch();
 
-  const handleAddTodo = () => {
-    if (newTodo.trim()) {
-      dispatch(addTodo(newTodo));
-      setNewTodo('');
-    }
+  const toggleMode = () => {
+    dispatch(toggleTheme());
   };
 
   return (
-    <div>
-      <h1>To-do List</h1>
-      <input
-        type="text"
-        value={newTodo}
-        onChange={(e) => setNewTodo(e.target.value)}
-      />
-      <button onClick={handleAddTodo}>Thêm công việc</button>
-      <ul>
-        {todos.map((todo, index) => (
-          <li key={index}>
-            <span
-              onClick={() => dispatch(toggleTodo(index))}
-              style={{
-                textDecoration: todo.completed ? 'line-through' : 'none',
-              }}
-            >
-              {todo.text}
-            </span>
-            <button onClick={() => dispatch(removeTodo(index))}>Xóa</button>
-          </li>
-        ))}
-      </ul>
+    <div className={theme}>
+      <h1>{theme === 'light' ? 'Chế độ sáng' : 'Chế độ tối'}</h1>
+      <button onClick={toggleMode}>Chuyển đổi chế độ</button>
     </div>
   );
 }
