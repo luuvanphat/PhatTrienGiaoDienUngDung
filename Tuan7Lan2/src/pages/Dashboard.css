@@ -70,3 +70,23 @@
   font-weight: bold;
   line-height: 1;
 }
+
+.datatable-title {
+  display: flex;
+  align-items: center;    
+  gap: 8px;                 
+
+  margin-bottom: 10px;
+}
+
+.datatable-title img {
+  width: 25px;
+  height: 25px;
+  display: block;          
+}
+
+.datatable-title span {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 1;
+}

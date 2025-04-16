@@ -1,0 +1,102 @@
+.data-table-container {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 12px 15px;
+  color: #6B7280;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid #E5E7EB;
+  text-transform: uppercase;
+}
+
+.data-table td {
+  padding: 15px;
+  border-bottom: 1px solid #F3F4F6;
+  color: #111827;
+}
+
+/* Checkbox */
+.select-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.data-table th:first-child,
+.data-table td:first-child {
+  width: 40px;
+  text-align: center;
+  padding-left: 10px;
+}
+
+.selected-row {
+  background-color: #f5f5f5;
+}
+
+/* Header style */
+.table-header {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Cell with icon next to text */
+.cell-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.row-icon {
+  width: 25px;
+  height: 25px;
+  opacity: 0.7;
+}
+
+/* Status styles */
+.status-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  
+}
+
+/* Status Colors */
+.status-badge.completed {
+  background: #ECFDF5;
+  color: #10B981;
+}
+
+.status-badge.in-progress {
+  background: #FEF3C7;
+  color: #F59E0B;
+}
+
+.status-badge.view {
+  background: #EFF6FF;
+  color: #3B82F6;
+}

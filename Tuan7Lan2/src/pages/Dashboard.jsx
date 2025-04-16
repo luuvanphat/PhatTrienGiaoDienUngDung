@@ -1,7 +1,8 @@
 import React from "react";
 import Overview from "../components/Overview/Overview";
 import "./Dashboard.css";
-
+import DataTable from "../components/DataTable/DataTable";
+import { mockTableData } from "../components/DataTable/utils";
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
@@ -24,13 +25,16 @@ const Dashboard = () => {
         </div>
       </div>
       <div class="overview-title">
-  <img src="/img/Lab_05/Squares four 1.png" alt="icon" />
-  <span>Overview</span>
-</div>
+        <img src="/img/Lab_05/Squares four 1.png" alt="icon" />
+        <span>Overview</span>
+      </div>
 
-
-      
       <Overview />
+      <div class="datatable-title">
+        <img src="/img/Lab_05/File text 1.png" alt="icon" />
+        <span>DataTable</span>
+      </div>
+      <DataTable data={mockTableData} />
     </div>
   );
 };
