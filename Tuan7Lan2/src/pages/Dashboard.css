@@ -73,20 +73,46 @@
 
 .datatable-title {
   display: flex;
-  align-items: center;    
-  gap: 8px;                 
-
-  margin-bottom: 10px;
-}
-
-.datatable-title img {
-  width: 25px;
-  height: 25px;
-  display: block;          
+  align-items: center;
 }
 
 .datatable-title span {
   font-size: 25px;
   font-weight: bold;
   line-height: 1;
+}
+
+.datatable-title img {
+  margin-right: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px; 
+  margin-left: auto; 
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: white;
+  color: #f54886;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid #f54886;
+}
+
+.button-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+.button:hover {
+  background-color: #ffa5c6;
+}
+
+.button:focus {
+  outline: none;
 }

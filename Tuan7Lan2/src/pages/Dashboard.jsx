@@ -33,7 +33,18 @@ const Dashboard = () => {
       <div class="datatable-title">
         <img src="/img/Lab_05/File text 1.png" alt="icon" />
         <span>DataTable</span>
+        <div class="button-container">
+          <button class="button">
+            <img src="/img/Lab_05/Download.png" alt="Icon 1" class="button-icon" />
+            Import
+          </button>
+          <button class="button">
+            <img src="/img/Lab_05/Move up.png" alt="Icon 2" class="button-icon" />
+            Export
+          </button>
+        </div>
       </div>
+
       <DataTable data={mockTableData} />
     </div>
   );
