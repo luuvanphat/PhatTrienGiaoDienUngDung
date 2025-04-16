@@ -1,37 +1,28 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { login, logout } from './redux/authSlice';
+import { fetchUsers } from './redux/usersSlice';
 
 function App() {
-  const [username, setUsername] = useState('');
-  const { user, isLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const { users, status, error } = useSelector((state) => state.users);
 
-  const handleLogin = () => {
-    dispatch(login({ username }));
-  };
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchUsers());
+    }
+  }, [dispatch, status]);
 
   return (
     <div>
-      <h1>{isLoggedIn ? `Chào mừng ${user.username}` : 'Bạn chưa đăng nhập'}</h1>
-      {isLoggedIn ? (
-        <button onClick={handleLogout}>Đăng xuất</button>
-      ) : (
-        <>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Nhập tên"
-          />
-          <button onClick={handleLogin}>Đăng nhập</button>
-        </>
-      )}
+      <h1>Danh sách người dùng</h1>
+      {status === 'loading' && <p>Đang tải...</p>}
+      {status === 'failed' && <p>Lỗi: {error}</p>}
+      <ul>
+        {status === 'succeeded' && users.map((user) => (
+          <li key={user.id}>{user.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
