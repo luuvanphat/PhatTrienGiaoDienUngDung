@@ -1,0 +1,25 @@
+/* CSS Grid layout */
+.container {
+  display: grid;
+  grid-template-columns: 200px 1fr; /* sidebar và content */
+  grid-template-rows: 60px 1fr; /* header và content */
+  grid-template-areas: 
+    "sidebar header"
+    "sidebar content";
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #f4f4f4;
+}
+
+.header {
+  grid-area: header;
+  background-color: #333;
+  color: white;
+}
+
+.content {
+  grid-area: content;
+  padding: 20px;
+}
