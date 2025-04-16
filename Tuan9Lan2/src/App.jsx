@@ -1,17 +1,44 @@
 // src/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { increment, decrement } from './redux/counterSlice';
+import { addTodo, toggleTodo, removeTodo } from './redux/todoSlice';
 
 function App() {
-  const count = useSelector((state) => state.counter.count);
+  const [newTodo, setNewTodo] = useState('');
+  const todos = useSelector((state) => state.todos.todos);
   const dispatch = useDispatch();
+
+  const handleAddTodo = () => {
+    if (newTodo.trim()) {
+      dispatch(addTodo(newTodo));
+      setNewTodo('');
+    }
+  };
 
   return (
     <div>
-      <h1>Counter: {count}</h1>
-      <button onClick={() => dispatch(increment())}>Tăng</button>
-      <button onClick={() => dispatch(decrement())}>Giảm</button>
+      <h1>To-do List</h1>
+      <input
+        type="text"
+        value={newTodo}
+        onChange={(e) => setNewTodo(e.target.value)}
+      />
+      <button onClick={handleAddTodo}>Thêm công việc</button>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>
+            <span
+              onClick={() => dispatch(toggleTodo(index))}
+              style={{
+                textDecoration: todo.completed ? 'line-through' : 'none',
+              }}
+            >
+              {todo.text}
+            </span>
+            <button onClick={() => dispatch(removeTodo(index))}>Xóa</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
