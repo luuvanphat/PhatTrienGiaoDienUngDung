@@ -1,10 +1,36 @@
-import React from 'react';
-import './Dashboard.css';
+import React from "react";
+import Overview from "../components/Overview/Overview";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
-      <h1>Dashboard </h1>
+      <div className="header">
+        <h2 className="title-header">Dashboard</h2>
+        <div className="header-right">
+          <div className="search-container">
+            <img
+              src="/img/Lab_05/Search.png"
+              alt="Search"
+              className="search-icon"
+            />
+            <input type="text" placeholder="Search..." className="search-box" />
+          </div>
+          <div className="action-icons">
+            <img src="/img/Lab_05/Bell 1.png" alt="Icon1" />
+            <img src="/img/Lab_05/Question 1.png" alt="Icon2" />
+            <img src="/img/Lab_05/Avatar 313.png" alt="Icon3" />
+          </div>
+        </div>
+      </div>
+      <div class="overview-title">
+  <img src="/img/Lab_05/Squares four 1.png" alt="icon" />
+  <span>Overview</span>
+</div>
+
+
+      
+      <Overview />
     </div>
   );
 };
