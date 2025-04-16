@@ -1,49 +1,37 @@
 // src/App.jsx
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem, removeItem, updateQuantity } from './redux/cartSlice';
+import { login, logout } from './redux/authSlice';
 
 function App() {
-  const [productName, setProductName] = useState('');
-  const [productQuantity, setProductQuantity] = useState(1);
-  const cartItems = useSelector((state) => state.cart.cartItems);
+  const [username, setUsername] = useState('');
+  const { user, isLoggedIn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
-    dispatch(addItem({ id: Date.now(), name: productName, quantity: productQuantity }));
-    setProductName('');
-    setProductQuantity(1);
+  const handleLogin = () => {
+    dispatch(login({ username }));
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   return (
     <div>
-      <h1>Giỏ hàng</h1>
-      <p>Tên sản phẩm</p>
-      <input
-        type="text"
-        value={productName}
-        onChange={(e) => setProductName(e.target.value)}
-        placeholder="Tên sản phẩm"
-      />
-      <p>Số lượng</p>
-      <input
-        type="number"
-        value={productQuantity}
-        onChange={(e) => setProductQuantity(Number(e.target.value))}
-        min="1"
-        placeholder="Số lượng"
-      />
-      <p></p>
-      <button onClick={handleAddToCart}>Thêm vào giỏ</button>
-      <p>Giỏ hàng:  </p>
-      <ul>
-        {cartItems.map((item) => (
-          <li key={item.id}>
-            {item.name} - {item.quantity}
-            <button onClick={() => dispatch(removeItem(item.id))}>Xóa</button>
-          </li>
-        ))}
-      </ul>
+      <h1>{isLoggedIn ? `Chào mừng ${user.username}` : 'Bạn chưa đăng nhập'}</h1>
+      {isLoggedIn ? (
+        <button onClick={handleLogout}>Đăng xuất</button>
+      ) : (
+        <>
+          <input
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Nhập tên"
+          />
+          <button onClick={handleLogin}>Đăng nhập</button>
+        </>
+      )}
     </div>
   );
 }
