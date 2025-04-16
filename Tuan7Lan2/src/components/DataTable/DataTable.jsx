@@ -1,12 +1,13 @@
-// components/DataTable/DataTable.jsx
 import React, { useState, useEffect } from "react";
 import "./DataTable.css";
-import { fetchData } from "../../api/data"; // Đường dẫn có thể tùy dự án
+import { fetchData } from "../../api/data";
 
 const DataTable = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5); // Số item mỗi trang
 
   useEffect(() => {
     const getData = async () => {
@@ -16,24 +17,40 @@ const DataTable = () => {
     getData();
   }, []);
 
+  // Tính toán dữ liệu phân trang
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  // Hàm xử lý chuyển trang
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const goToPrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  const goToNextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+
   const handleRowSelect = (index) => {
-    const newSelectedRows = selectedRows.includes(index)
-      ? selectedRows.filter((i) => i !== index)
-      : [...selectedRows, index];
+    const absoluteIndex = indexOfFirstItem + index;
+    const newSelectedRows = selectedRows.includes(absoluteIndex)
+      ? selectedRows.filter((i) => i !== absoluteIndex)
+      : [...selectedRows, absoluteIndex];
     setSelectedRows(newSelectedRows);
-    setSelectAll(newSelectedRows.length === data.length);
+    setSelectAll(newSelectedRows.length === currentItems.length);
   };
 
   const handleSelectAll = () => {
     const newSelectAll = !selectAll;
     setSelectAll(newSelectAll);
-    setSelectedRows(newSelectAll ? data.map((_, i) => i) : []);
+    setSelectedRows(
+      newSelectAll 
+        ? currentItems.map((_, index) => indexOfFirstItem + index)
+        : []
+    );
   };
 
   return (
     <div className="data-table-container">
       <table className="data-table">
-        <thead>
+              <thead>
           <tr className="table-header">
             <th>
               <input
@@ -86,6 +103,55 @@ const DataTable = () => {
           ))}
         </tbody>
       </table>
+
+      {/* Phần Pagination */}
+      <div className="pagination-container">
+        <div className="pagination-info">
+          Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, data.length)} of {data.length} entries
+        </div>
+        <div className="pagination-controls">
+          <button 
+            onClick={() => paginate(1)} 
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            First
+          </button>
+          <button 
+            onClick={goToPrevPage} 
+            disabled={currentPage === 1}
+            className="pagination-button"
+          >
+            Previous
+          </button>
+          
+          {/* Hiển thị số trang */}
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+            <button
+              key={number}
+              onClick={() => paginate(number)}
+              className={`pagination-button ${currentPage === number ? 'active' : ''}`}
+            >
+              {number}
+            </button>
+          ))}
+          
+          <button 
+            onClick={goToNextPage} 
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Next
+          </button>
+          <button 
+            onClick={() => paginate(totalPages)} 
+            disabled={currentPage === totalPages}
+            className="pagination-button"
+          >
+            Last
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

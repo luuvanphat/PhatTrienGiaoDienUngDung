@@ -44,7 +44,8 @@ export const fetchData = () => {
             orderValue: 922,
             orderDate: "10/06/2023",
             status: "Completed"
-          }
+          },
+          
         ]);
       }, 1000); // giả lập độ trễ
     });
