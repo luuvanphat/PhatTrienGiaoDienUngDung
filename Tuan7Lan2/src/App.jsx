@@ -8,11 +8,12 @@ import Projects from './pages/Projects';
 import Report from './pages/Report';
 import ImportPage from './pages/ImportPage';
 import ExportPage from './pages/ExportPage';
+import NotFound from './pages/NotFound'; 
 
 function App() {
   return (
     <Router>
-      <div className="app-container" style={{ display: 'flex' }}>
+      <div className="app-container">
         <Sidebar />
         <MainContent>
           <Routes>
@@ -23,6 +24,7 @@ function App() {
             <Route path="/report" element={<Report />} />
             <Route path="/import" element={<ImportPage />} />
             <Route path="/export" element={<ExportPage />} />
+            <Route path="*" element={<NotFound />} /> 
           </Routes>
         </MainContent>
       </div>
