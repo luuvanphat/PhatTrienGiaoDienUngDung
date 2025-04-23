@@ -8,6 +8,8 @@ const DataTable = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5); // Số item mỗi trang
+  const [isModalOpen, setIsModalOpen] = useState(false); // State điều khiển modal
+  const [currentRowData, setCurrentRowData] = useState(null); // Dữ liệu dòng cần chỉnh sửa
 
   useEffect(() => {
     const getData = async () => {
@@ -41,16 +43,35 @@ const DataTable = () => {
     const newSelectAll = !selectAll;
     setSelectAll(newSelectAll);
     setSelectedRows(
-      newSelectAll 
+      newSelectAll
         ? currentItems.map((_, index) => indexOfFirstItem + index)
         : []
     );
   };
 
+  const openModal = (row) => {
+    setCurrentRowData(row); // Lưu dữ liệu dòng cần chỉnh sửa
+    setIsModalOpen(true); // Mở modal
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Đóng modal
+    setCurrentRowData(null); // Reset dữ liệu dòng
+  };
+
+  const handleModalSubmit = () => {
+    // Cập nhật dữ liệu sau khi chỉnh sửa (ví dụ gửi API cập nhật dữ liệu)
+    const updatedData = data.map((row) =>
+      row.id === currentRowData.id ? currentRowData : row
+    );
+    setData(updatedData);
+    closeModal(); // Đóng modal sau khi cập nhật
+  };
+
   return (
     <div className="data-table-container">
       <table className="data-table">
-              <thead>
+        <thead>
           <tr className="table-header">
             <th>
               <input
@@ -96,7 +117,12 @@ const DataTable = () => {
               <td>
                 <div className="status-with-icon">
                   <span className={`status-badge ${row.status.toLowerCase()}`}>{row.status}</span>
-                  <img src="/img/Lab_05/create.png" alt="status icon" className="status-icon" />
+                  <img
+                    src="/img/Lab_05/create.png"
+                    alt="status icon"
+                    className="status-icon"
+                    onClick={() => openModal(row)} // Mở modal khi nhấn vào biểu tượng
+                  />
                 </div>
               </td>
             </tr>
@@ -104,28 +130,83 @@ const DataTable = () => {
         </tbody>
       </table>
 
+      {/* Modal chỉnh sửa */}
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Edit Information</h2>
+            <div className="modal-form">
+              <label>
+                Customer Name:
+                <input
+                  type="text"
+                  value={currentRowData.customerName}
+                  onChange={(e) =>
+                    setCurrentRowData({ ...currentRowData, customerName: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Company:
+                <input
+                  type="text"
+                  value={currentRowData.company}
+                  onChange={(e) =>
+                    setCurrentRowData({ ...currentRowData, company: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Order Value:
+                <input
+                  type="number"
+                  value={currentRowData.orderValue}
+                  onChange={(e) =>
+                    setCurrentRowData({ ...currentRowData, orderValue: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Order Date:
+                <input
+                  type="date"
+                  value={currentRowData.orderDate}
+                  onChange={(e) =>
+                    setCurrentRowData({ ...currentRowData, orderDate: e.target.value })
+                  }
+                />
+              </label>
+              <label>
+                Status:
+                <input
+                  type="text"
+                  value={currentRowData.status}
+                  onChange={(e) =>
+                    setCurrentRowData({ ...currentRowData, status: e.target.value })
+                  }
+                />
+              </label>
+              <div className="modal-actions">
+                <button onClick={handleModalSubmit}>Save</button>
+                <button onClick={closeModal}>Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Phần Pagination */}
       <div className="pagination-container">
         <div className="pagination-info">
           Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, data.length)} of {data.length} entries
         </div>
         <div className="pagination-controls">
-          <button 
-            onClick={() => paginate(1)} 
-            disabled={currentPage === 1}
-            className="pagination-button"
-          >
+          <button onClick={() => paginate(1)} disabled={currentPage === 1} className="pagination-button">
             First
           </button>
-          <button 
-            onClick={goToPrevPage} 
-            disabled={currentPage === 1}
-            className="pagination-button"
-          >
+          <button onClick={goToPrevPage} disabled={currentPage === 1} className="pagination-button">
             Previous
           </button>
-          
-          {/* Hiển thị số trang */}
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
             <button
               key={number}
@@ -135,19 +216,10 @@ const DataTable = () => {
               {number}
             </button>
           ))}
-          
-          <button 
-            onClick={goToNextPage} 
-            disabled={currentPage === totalPages}
-            className="pagination-button"
-          >
+          <button onClick={goToNextPage} disabled={currentPage === totalPages} className="pagination-button">
             Next
           </button>
-          <button 
-            onClick={() => paginate(totalPages)} 
-            disabled={currentPage === totalPages}
-            className="pagination-button"
-          >
+          <button onClick={() => paginate(totalPages)} disabled={currentPage === totalPages} className="pagination-button">
             Last
           </button>
         </div>
