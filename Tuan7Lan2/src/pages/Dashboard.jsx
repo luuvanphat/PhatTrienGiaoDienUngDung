@@ -3,7 +3,13 @@ import Overview from "../components/Overview/Overview";
 import "./Dashboard.css";
 import DataTable from "../components/DataTable/DataTable";
 import { mockTableData } from "../components/DataTable/utils";
+import AddUserModal from "../components/AddUserModal/AddUserModal";
+import { useState } from "react";
 const Dashboard = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
   return (
     <div className="dashboard-container">
       <div className="header">
@@ -30,22 +36,31 @@ const Dashboard = () => {
       </div>
 
       <Overview />
-      <div class="datatable-title">
+      <div className="datatable-title">
         <img src="/img/Lab_05/File text 1.png" alt="icon" />
         <span>DataTable</span>
-        <div class="button-container">
-          <button class="button">
-            <img src="/img/Lab_05/Download.png" alt="Icon 1" class="button-icon" />
-            Import
+        <div className="button-container">
+          <button className="button" onClick={openModal}>
+            <img
+              src="/img/Lab_05/Download.png"
+              alt="Icon 1"
+              className="button-icon"
+            />
+            Add User
           </button>
-          <button class="button">
-            <img src="/img/Lab_05/Move up.png" alt="Icon 2" class="button-icon" />
+          <button className="button">
+            <img
+              src="/img/Lab_05/Move up.png"
+              alt="Icon 2"
+              className="button-icon"
+            />
             Export
           </button>
         </div>
       </div>
 
       <DataTable data={mockTableData} />
+      <AddUserModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 };

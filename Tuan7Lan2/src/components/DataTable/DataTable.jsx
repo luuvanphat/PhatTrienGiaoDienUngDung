@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./DataTable.css";
 import { fetchData } from "../../api/data";
+import AddUserModal from "../AddUserModal/AddUserModal";
 
 const DataTable = () => {
   const [data, setData] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // Số item mỗi trang
-  const [isModalOpen, setIsModalOpen] = useState(false); // State điều khiển modal
-  const [currentRowData, setCurrentRowData] = useState(null); // Dữ liệu dòng cần chỉnh sửa
+  const [itemsPerPage] = useState(5);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentRowData, setCurrentRowData] = useState(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -19,13 +20,11 @@ const DataTable = () => {
     getData();
   }, []);
 
-  // Tính toán dữ liệu phân trang
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
-  // Hàm xử lý chuyển trang
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const goToPrevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
   const goToNextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
@@ -50,22 +49,21 @@ const DataTable = () => {
   };
 
   const openModal = (row) => {
-    setCurrentRowData(row); // Lưu dữ liệu dòng cần chỉnh sửa
-    setIsModalOpen(true); // Mở modal
+    setCurrentRowData(row);
+    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false); // Đóng modal
-    setCurrentRowData(null); // Reset dữ liệu dòng
+    setIsModalOpen(false);
+    setCurrentRowData(null);
   };
 
   const handleModalSubmit = () => {
-    // Cập nhật dữ liệu sau khi chỉnh sửa (ví dụ gửi API cập nhật dữ liệu)
     const updatedData = data.map((row) =>
       row.id === currentRowData.id ? currentRowData : row
     );
     setData(updatedData);
-    closeModal(); // Đóng modal sau khi cập nhật
+    closeModal();
   };
 
   return (
@@ -89,48 +87,44 @@ const DataTable = () => {
           </tr>
         </thead>
         <tbody>
-          {data.map((row, index) => (
-            <tr key={index} className={selectedRows.includes(index) ? "selected-row" : ""}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedRows.includes(index)}
-                  onChange={() => handleRowSelect(index)}
-                  className="select-checkbox"
-                />
-              </td>
-              <td>
-                <div className="cell-with-icon">
-                  <img src="/img/Lab_05/Avatar (1).png" alt="Customer" className="row-icon" />
-                  {row.customerName}
-                </div>
-              </td>
-              <td>
-                <div className="cell-with-icon">{row.company}</div>
-              </td>
-              <td>
-                <div className="cell-with-icon">${row.orderValue}</div>
-              </td>
-              <td>
-                <div className="cell-with-icon">{row.orderDate}</div>
-              </td>
-              <td>
-                <div className="status-with-icon">
-                  <span className={`status-badge ${row.status.toLowerCase()}`}>{row.status}</span>
-                  <img
-                    src="/img/Lab_05/create.png"
-                    alt="status icon"
-                    className="status-icon"
-                    onClick={() => openModal(row)} // Mở modal khi nhấn vào biểu tượng
+          {currentItems.map((row, index) => {
+            const absoluteIndex = indexOfFirstItem + index;
+            return (
+              <tr key={row.id} className={selectedRows.includes(absoluteIndex) ? "selected-row" : ""}>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={selectedRows.includes(absoluteIndex)}
+                    onChange={() => handleRowSelect(index)}
+                    className="select-checkbox"
                   />
-                </div>
-              </td>
-            </tr>
-          ))}
+                </td>
+                <td>
+                  <div className="cell-with-icon">
+                    <img src="/img/Lab_05/Avatar (1).png" alt="Customer" className="row-icon" />
+                    {row.customerName}
+                  </div>
+                </td>
+                <td><div className="cell-with-icon">{row.company}</div></td>
+                <td><div className="cell-with-icon">${row.orderValue}</div></td>
+                <td><div className="cell-with-icon">{row.orderDate}</div></td>
+                <td>
+                  <div className="status-with-icon">
+                    <span className={`status-badge ${row.status.toLowerCase()}`}>{row.status}</span>
+                    <img
+                      src="/img/Lab_05/create.png"
+                      alt="edit"
+                      className="status-icon"
+                      onClick={() => openModal(row)}
+                    />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 
-      {/* Modal chỉnh sửa */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -178,13 +172,16 @@ const DataTable = () => {
               </label>
               <label>
                 Status:
-                <input
-                  type="text"
+                <select
                   value={currentRowData.status}
                   onChange={(e) =>
                     setCurrentRowData({ ...currentRowData, status: e.target.value })
                   }
-                />
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
               </label>
               <div className="modal-actions">
                 <button onClick={handleModalSubmit}>Save</button>
@@ -195,7 +192,6 @@ const DataTable = () => {
         </div>
       )}
 
-      {/* Phần Pagination */}
       <div className="pagination-container">
         <div className="pagination-info">
           Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, data.length)} of {data.length} entries
