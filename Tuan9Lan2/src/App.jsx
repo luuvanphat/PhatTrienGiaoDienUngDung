@@ -1,46 +1,55 @@
 // src/App.jsx
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { increment, decrement, reset, incrementByAmount, setStep } from './redux/counterSliceAdvance';  // Counter nâng cao
+import { updateInput, calculateBMI, calculateTax } from './redux/formSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const { weight, height, result, taxAmount } = useSelector((state) => state.form);
 
-  // Lấy giá trị và step từ Redux store
-  const { value, step } = useSelector((state) => state.counterAd);
+  const handleInputChange = (e) => {
+    dispatch(updateInput({ field: e.target.name, value: e.target.value }));
+  };
 
-  const [amount, setAmount] = useState(0);  // Để nhập số cho incrementByAmount
-  const [newStep, setNewStep] = useState(step);  // Để thay đổi step cho counter nâng cao
+  const handleCalculateBMI = () => {
+    dispatch(calculateBMI());
+  };
 
-  const handleAmountChange = (e) => setAmount(Number(e.target.value));
-  const handleStepChange = (e) => setNewStep(Number(e.target.value));
+  const handleCalculateTax = () => {
+    dispatch(calculateTax({ income: weight }));
+  };
 
   return (
     <div>
-      <h1>Counter nâng cao</h1>
-      <p>Value: {value} | Step: {step}</p>
-      <button onClick={() => dispatch(increment())}>Tăng theo step</button>
-      <button onClick={() => dispatch(decrement())}>Giảm theo step</button>
-      <button onClick={() => dispatch(reset())}>Đặt lại</button>
-
+      <h1>Form Tính Toán BMI và Thuế</h1>
       <div>
-        <input 
-          type="number" 
-          value={newStep} 
-          onChange={handleStepChange} 
-          placeholder="Nhập bước" 
+        <input
+          type="number"
+          name="weight"
+          value={weight}
+          onChange={handleInputChange}
+          placeholder="Cân nặng (kg)"
         />
-        <button onClick={() => dispatch(setStep(newStep))}>Cập nhật bước</button>
+        <input
+          type="number"
+          name="height"
+          value={height}
+          onChange={handleInputChange}
+          placeholder="Chiều cao (m)"
+        />
+        <button onClick={handleCalculateBMI}>Tính BMI</button>
+        {result && <p>BMI của bạn: {result}</p>}
       </div>
-
       <div>
-        <input 
-          type="number" 
-          value={amount} 
-          onChange={handleAmountChange} 
-          placeholder="Nhập số" 
+        <input
+          type="number"
+          name="income"
+          value={weight} // Dùng cân nặng làm thu nhập giả sử
+          onChange={handleInputChange}
+          placeholder="Thu nhập"
         />
-        <button onClick={() => dispatch(incrementByAmount(amount))}>Tăng theo số</button>
+        <button onClick={handleCalculateTax}>Tính Thuế</button>
+        {taxAmount && <p>Thuế phải trả: {taxAmount}</p>}
       </div>
     </div>
   );

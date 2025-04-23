@@ -7,6 +7,7 @@ import themeReducer from './themeSlice';
 import cartReducer from './cartSlice';
 import authReducer from './authSlice';
 import usersReducer from './usersSlice';
+import formReducer from './formSlice';
 
 export const store = configureStore({
   reducer: {
@@ -17,5 +18,6 @@ export const store = configureStore({
     cart: cartReducer,
     auth: authReducer,
     users: usersReducer,
+    form: formReducer,
   },
 });
