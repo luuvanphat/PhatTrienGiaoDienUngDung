@@ -1,28 +1,47 @@
 // src/App.jsx
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from './redux/usersSlice';
+import { increment, decrement, reset, incrementByAmount, setStep } from './redux/counterSliceAdvance';  // Counter nâng cao
 
 function App() {
   const dispatch = useDispatch();
-  const { users, status, error } = useSelector((state) => state.users);
 
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchUsers());
-    }
-  }, [dispatch, status]);
+  // Lấy giá trị và step từ Redux store
+  const { value, step } = useSelector((state) => state.counterAd);
+
+  const [amount, setAmount] = useState(0);  // Để nhập số cho incrementByAmount
+  const [newStep, setNewStep] = useState(step);  // Để thay đổi step cho counter nâng cao
+
+  const handleAmountChange = (e) => setAmount(Number(e.target.value));
+  const handleStepChange = (e) => setNewStep(Number(e.target.value));
 
   return (
     <div>
-      <h1>Danh sách người dùng</h1>
-      {status === 'loading' && <p>Đang tải...</p>}
-      {status === 'failed' && <p>Lỗi: {error}</p>}
-      <ul>
-        {status === 'succeeded' && users.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+      <h1>Counter nâng cao</h1>
+      <p>Value: {value} | Step: {step}</p>
+      <button onClick={() => dispatch(increment())}>Tăng theo step</button>
+      <button onClick={() => dispatch(decrement())}>Giảm theo step</button>
+      <button onClick={() => dispatch(reset())}>Đặt lại</button>
+
+      <div>
+        <input 
+          type="number" 
+          value={newStep} 
+          onChange={handleStepChange} 
+          placeholder="Nhập bước" 
+        />
+        <button onClick={() => dispatch(setStep(newStep))}>Cập nhật bước</button>
+      </div>
+
+      <div>
+        <input 
+          type="number" 
+          value={amount} 
+          onChange={handleAmountChange} 
+          placeholder="Nhập số" 
+        />
+        <button onClick={() => dispatch(incrementByAmount(amount))}>Tăng theo số</button>
+      </div>
     </div>
   );
 }
