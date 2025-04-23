@@ -8,6 +8,7 @@ import cartReducer from './cartSlice';
 import authReducer from './authSlice';
 import usersReducer from './usersSlice';
 import formReducer from './formSlice';
+import eventReducer from './eventSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,5 +20,6 @@ export const store = configureStore({
     auth: authReducer,
     users: usersReducer,
     form: formReducer,
+    events: eventReducer,
   },
 });
